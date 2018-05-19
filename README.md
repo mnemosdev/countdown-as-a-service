@@ -6,7 +6,7 @@
 
 ## Start the server
 
-    node index.js
+    yarn start
 
 ## How to use
 
