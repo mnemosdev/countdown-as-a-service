@@ -3,6 +3,14 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import {interval} from 'rxjs';
 
 
+enum TimerStatus {
+  PAUSED,
+  ONGOING,
+  FINISHED,
+  STOP
+}
+
+
 @Component({
   selector: 'app-timer',
   templateUrl: './timer.component.html',
@@ -11,8 +19,10 @@ import {interval} from 'rxjs';
 export class TimerComponent implements OnInit {
 
   seconds: number = 0
-  secondsPassed: number = 0;
+  secondsPassed: number = 0
   intervalSubscriber: any
+  status = TimerStatus.STOP
+  public TimerStatus: any = TimerStatus;
 
   constructor(
     private route: ActivatedRoute,
@@ -25,31 +35,57 @@ export class TimerComponent implements OnInit {
     });
   }
 
-
   start(): any {
-    if (this.seconds == 0) {
+    if (this.seconds == 0 || this.status == TimerStatus.ONGOING) {
       return;
     }
+    console.log('start')
+    this.status = TimerStatus.ONGOING
     this.intervalSubscriber = interval(1000).subscribe((val) => {
-      if (this.seconds == (val + 1)) {
-        this.stop()
-      } else {
-        this.secondsPassed += 1;
+      this.secondsPassed += 1;
+      if (this.seconds == this.secondsPassed) {
+        this.finish()
       }
     });
   }
 
   stop(): any {
+    this.status = TimerStatus.STOP
     this.secondsPassed = 0
     if (this.intervalSubscriber) {
       this.intervalSubscriber.unsubscribe()
     }
   }
 
-  pause(): any {
+  finish(): any {
+    console.log('finish')
+    this.status = TimerStatus.FINISHED
+    this.secondsPassed = this.seconds;
     if (this.intervalSubscriber) {
       this.intervalSubscriber.unsubscribe()
     }
+  }
+
+  togglePause(): any {
+    if (this.status == TimerStatus.ONGOING) {
+      this.pause();
+    } else if (this.status == TimerStatus.PAUSED) {
+      this.start();
+    }
+  }
+
+  pause(): any {
+    if (this.status != TimerStatus.ONGOING) {
+      return
+    }
+    this.status = TimerStatus.PAUSED
+    if (this.intervalSubscriber) {
+      this.intervalSubscriber.unsubscribe()
+    }
+  }
+
+  remaining(): number {
+    return (100 - (this.secondsPassed / this.seconds) * 100)
   }
 
   restart(): any {

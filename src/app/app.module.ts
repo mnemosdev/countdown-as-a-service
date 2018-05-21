@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { RouterModule, Routes } from '@angular/router';
 import { TimerComponent } from './timer/timer.component';
 
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
 const appRoutes: Routes = [
   { path: 'countdown/:seconds', component: TimerComponent },
 ];
@@ -16,6 +18,7 @@ const appRoutes: Routes = [
     TimerComponent
   ],
   imports: [
+    NgbModule.forRoot(),
     RouterModule.forRoot(
       appRoutes,
     ),

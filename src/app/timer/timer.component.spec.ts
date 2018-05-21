@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { of } from "rxjs";
 import { ActivatedRouteStub } from '../../testing/activated-route-stub';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 
 describe('TimerComponent', () => {
@@ -18,6 +19,7 @@ describe('TimerComponent', () => {
     activatedRouter = new ActivatedRouteStub();
     TestBed.configureTestingModule({
       declarations: [ TimerComponent ],
+      imports: [NgbModule.forRoot()],
       providers: [{
           provide: ActivatedRoute,
           useValue: activatedRouter
@@ -41,9 +43,9 @@ describe('TimerComponent', () => {
     discardPeriodicTasks();
   }));
 
-  it('should call stop after 5 seconds', fakeAsync(() => {
+  it('should call finish after 5 seconds', fakeAsync(() => {
     activatedRouter.setParamMap({ seconds: 5 })
-    spyOn(component, 'stop');
+    spyOn(component, 'finish');
     tick(1000);
     fixture.detectChanges();
     expect(component.secondsPassed).toBe(0);
@@ -53,10 +55,10 @@ describe('TimerComponent', () => {
     tick(1000);
     fixture.detectChanges();
     expect(component.secondsPassed).toBe(2);
-    tick(4000);
+    tick(3000);
     fixture.detectChanges();
     expect(component.secondsPassed).toBe(5);
-    expect(component.stop).toHaveBeenCalled();
+    expect(component.finish).toHaveBeenCalled();
     discardPeriodicTasks();
   }));
 
@@ -115,6 +117,46 @@ describe('TimerComponent', () => {
     tick(2000);
     fixture.detectChanges();
     expect(component.secondsPassed).toBe(4);
+    discardPeriodicTasks();
+  }));
+
+  it('should toggle pause', fakeAsync(() => {
+    activatedRouter.setParamMap({ seconds: 8 })
+    tick(1000);
+    fixture.detectChanges();
+    expect(component.secondsPassed).toBe(0);
+    tick(1000);
+    fixture.detectChanges();
+    expect(component.secondsPassed).toBe(1);
+    tick(1000);
+    fixture.detectChanges();
+    expect(component.secondsPassed).toBe(2);
+    component.togglePause()
+    tick(9000);
+    fixture.detectChanges();
+    expect(component.secondsPassed).toBe(2);
+    component.togglePause()
+    tick(2000);
+    fixture.detectChanges();
+    expect(component.secondsPassed).toBe(4);
+    discardPeriodicTasks();
+  }));
+
+  it('should finish', fakeAsync(() => {
+    activatedRouter.setParamMap({ seconds: 8 })
+    tick(1000);
+    fixture.detectChanges();
+    expect(component.secondsPassed).toBe(0);
+    tick(1000);
+    fixture.detectChanges();
+    expect(component.secondsPassed).toBe(1);
+    tick(1000);
+    fixture.detectChanges();
+    expect(component.secondsPassed).toBe(2);
+    component.finish()
+    tick(9000);
+    fixture.detectChanges();
+    expect(component.secondsPassed).toBe(component.seconds);
     discardPeriodicTasks();
   }));
 
