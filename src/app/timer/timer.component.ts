@@ -11,29 +11,42 @@ import {interval} from 'rxjs';
 export class TimerComponent implements OnInit {
 
   seconds: number = 0
+  secondsPassed: number = 0;
   intervalSubscriber: any
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
   ) { }
 
   ngOnInit() {
-    this.seconds = +this.route.snapshot.paramMap.get('seconds')
-    this.start()
+    this.route.paramMap.subscribe(pmap => {
+      this.seconds = +pmap.get('seconds')
+      this.start()
+    });
   }
 
+
   start(): any {
+    if (this.seconds == 0) {
+      return;
+    }
     this.intervalSubscriber = interval(1000).subscribe((val) => {
-      console.log(val)
-      if (this.seconds == val) {
+      if (this.seconds == (val + 1)) {
         this.stop()
+      } else {
+        this.secondsPassed += 1;
       }
     });
   }
 
   stop(): any {
-    console.log('Stop')
+    this.secondsPassed = 0
+    if (this.intervalSubscriber) {
+      this.intervalSubscriber.unsubscribe()
+    }
+  }
+
+  pause(): any {
     if (this.intervalSubscriber) {
       this.intervalSubscriber.unsubscribe()
     }
