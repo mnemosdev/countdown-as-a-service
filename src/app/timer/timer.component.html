@@ -1,9 +1,22 @@
-<p>
-  <ngb-progressbar type="success" [value]="remaining()" [striped]="true"></ngb-progressbar>
-</p>
-
-<div class="btn-group">
-    <button type="button" class="btn btn-primary" ngbButton (click)='togglePause()' >{{status == TimerStatus.PAUSED ? 'Play' : 'Pause'}}</button>
-    <button type="button" class="btn btn-primary" ngbButton (click)='restart()' >Restart</button>
+<div class="jumbotron">
+  <div class="container">
+    <h1 class="display-1 text-center">
+      <i class="fa fa-bath" aria-hidden="true"></i>
+      {{hh < 10 ? '0' : ''}}{{hh}}h {{mm < 10 ? '0' : ''}}{{mm}}m {{ss < 10 ? '0' : ''}}{{ss}}s
+    </h1>
+  </div>
 </div>
+
+<div class="container">
+  <p>
+    <ngb-progressbar type="success" [value]="remaining()" [striped]="true"></ngb-progressbar>
+  </p>
+
+  <div class="btn-group">
+      <button type="button" class="btn btn-primary" ngbButton (click)='togglePause()' >{{status == TimerStatus.PAUSED ? 'Play' : 'Pause'}}</button>
+      <button type="button" class="btn btn-primary" ngbButton (click)='restart()' >Restart</button>
+  </div>
+
+</div>
+
 

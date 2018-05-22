@@ -22,6 +22,11 @@ export class TimerComponent implements OnInit {
   secondsPassed: number = 0
   intervalSubscriber: any
   status = TimerStatus.STOP
+
+  hh = 0;
+  mm = 0;
+  ss = 0;
+
   public TimerStatus: any = TimerStatus;
 
   constructor(
@@ -31,8 +36,15 @@ export class TimerComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe(pmap => {
       this.seconds = +pmap.get('seconds')
+      this.updateTab(this.seconds)
       this.start()
     });
+  }
+
+  updateTab(remainingSeconds: number): any {
+    this.hh = Math.floor(remainingSeconds / 3600);
+    this.mm = Math.floor((remainingSeconds% 3600) / 60);
+    this.ss = remainingSeconds % 60
   }
 
   start(): any {
@@ -43,6 +55,7 @@ export class TimerComponent implements OnInit {
     this.status = TimerStatus.ONGOING
     this.intervalSubscriber = interval(1000).subscribe((val) => {
       this.secondsPassed += 1;
+      this.updateTab(this.seconds - this.secondsPassed)
       if (this.seconds == this.secondsPassed) {
         this.finish()
       }

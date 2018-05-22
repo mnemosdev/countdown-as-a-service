@@ -157,8 +157,17 @@ describe('TimerComponent', () => {
     tick(9000);
     fixture.detectChanges();
     expect(component.secondsPassed).toBe(component.seconds);
+    component.pause()
+    expect(component.status).toBe(component.TimerStatus.FINISHED);
     discardPeriodicTasks();
   }));
 
+
+  it('should transform remaining time in hh mm ss format', () => {
+    component.updateTab(5000)
+    expect(component.hh).toBe(1);
+    expect(component.mm).toBe(23);
+    expect(component.ss).toBe(20);
+  });
 
 });
