@@ -1,5 +1,7 @@
 # Countdown As A Service
 
+A simple countdown to timebox talks made with Angular 6 and Bootstrap ⏰
+
 ## Install
 
     yarn install
@@ -7,6 +9,10 @@
 ## Start the server
 
     yarn start
+
+## Test
+
+    yarn test
 
 ## How to use
 

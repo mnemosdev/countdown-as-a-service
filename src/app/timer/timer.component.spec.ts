@@ -7,7 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { of } from "rxjs";
 import { ActivatedRouteStub } from '../../testing/activated-route-stub';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 describe('TimerComponent', () => {
