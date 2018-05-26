@@ -13,8 +13,11 @@
 
   <div class="btn-group">
       <button type="button" class="btn btn-primary" ngbButton (click)='togglePause()' >
-        <i *ngIf="status == TimerStatus.PAUSED" class="fa fa-play" aria-hidden="true"></i>
-        <i *ngIf="status != TimerStatus.PAUSED" class="fa fa-pause" aria-hidden="true"></i>
+        <i *ngIf="status != TimerStatus.ONGOING" class="fa fa-play" aria-hidden="true"></i>
+        <i *ngIf="status == TimerStatus.ONGOING" class="fa fa-pause" aria-hidden="true"></i>
+      </button>
+      <button type="button" class="btn btn-primary" ngbButton (click)='stop()' >
+        <i class="fa fa-stop" aria-hidden="true"></i>
       </button>
       <button type="button" class="btn btn-primary" ngbButton (click)='restart()' >
         <i class="fa fa-undo" aria-hidden="true"></i>

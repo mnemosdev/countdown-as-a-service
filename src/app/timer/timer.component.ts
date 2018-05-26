@@ -43,7 +43,7 @@ export class TimerComponent implements OnInit {
 
   updateTab(remainingSeconds: number): any {
     this.hh = Math.floor(remainingSeconds / 3600);
-    this.mm = Math.floor((remainingSeconds% 3600) / 60);
+    this.mm = Math.floor((remainingSeconds % 3600) / 60);
     this.ss = remainingSeconds % 60
   }
 
@@ -51,7 +51,6 @@ export class TimerComponent implements OnInit {
     if (this.seconds == 0 || this.status == TimerStatus.ONGOING) {
       return;
     }
-    console.log('start')
     this.status = TimerStatus.ONGOING
     this.intervalSubscriber = interval(1000).subscribe((val) => {
       this.secondsPassed += 1;
@@ -65,13 +64,13 @@ export class TimerComponent implements OnInit {
   stop(): any {
     this.status = TimerStatus.STOP
     this.secondsPassed = 0
+    this.updateTab(this.seconds)
     if (this.intervalSubscriber) {
       this.intervalSubscriber.unsubscribe()
     }
   }
 
   finish(): any {
-    console.log('finish')
     this.status = TimerStatus.FINISHED
     this.secondsPassed = this.seconds;
     if (this.intervalSubscriber) {
@@ -80,9 +79,13 @@ export class TimerComponent implements OnInit {
   }
 
   togglePause(): any {
+    if (this.status == TimerStatus.FINISHED) {
+      this.restart();
+      return;
+    }
     if (this.status == TimerStatus.ONGOING) {
       this.pause();
-    } else if (this.status == TimerStatus.PAUSED) {
+    } else {
       this.start();
     }
   }
